@@ -1,10 +1,10 @@
 import React from "react";
-import { useState } from "react";
 
 const Modal = (props) => {
-  const { setShowModal, yapilmasiGerekenIs, title, aciklama } = props;
+  const { onCancel, onConfirm, title, aciklama } = props;
   return (
-    <div
+    <button
+      onClick={onCancel}
       style={{
         position: "absolute",
         top: 30 /*orjinalde 0, manuel olarak mudahale edildi*/,
@@ -15,6 +15,7 @@ const Modal = (props) => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        cursor: "default",
       }}
     >
       <div
@@ -26,23 +27,23 @@ const Modal = (props) => {
         }}
       >
         <h1 className="text-center">{title}</h1>
-        <p>{aciklama}</p>
+        <p className="text-center">{aciklama}</p>
         <div className="d-flex justify-content-center">
           <button
-            onClick={() => setShowModal(false)}
+            onClick={onCancel}
             className="btn btn-sm btn-outline-danger mx-3"
           >
             Close
           </button>
           <button
-            onClick={yapilmasiGerekenIs}
+            onClick={onConfirm}
             className="btn btn-sm btn-outline-primary"
           >
             Confirm
           </button>
         </div>
       </div>
-    </div>
+    </button>
   );
 };
 

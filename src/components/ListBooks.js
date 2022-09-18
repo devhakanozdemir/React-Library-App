@@ -3,28 +3,34 @@ import axios from "axios";
 import Loading from "./Loading";
 import { Link } from "react-router-dom";
 import Modal from "./Modal";
+import { useSelector } from "react-redux";
 
 const ListBooks = (props) => {
-  const [books, setBooks] = useState(null);
-  const [categories, setCategories] = useState(null);
+  const { categoriesState, booksState } = useSelector((state) => state);
+  console.log(categoriesState);
+  console.log("booksState", booksState);
+
+  //const [books, setBooks] = useState(null);
+  //const [categories, setCategories] = useState(null);
   const [didUpdate, setDidUpdate] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [silinecekKitap, setSilinecekKitap] = useState(null);
+  const [silinecekKitapIsmi, setSilinecekKitapIsmi] = useState("");
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3004/books")
-      .then((resBook) => {
-        console.log(resBook);
-        setBooks(resBook.data);
-        axios
-          .get("http://localhost:3004/categories")
-          .then((resCat) => {
-            setCategories(resCat.data);
-          })
-          .catch((err) => console.log("categories err", err));
-      })
-      .catch((err) => console.log("books err", err));
+    // axios
+    //   .get("http://localhost:3004/books")
+    //   .then((resBook) => {
+    //     console.log(resBook);
+    //     setBooks(resBook.data);
+    //     // axios
+    //     //   .get("http://localhost:3004/categories")
+    //     //   .then((resCat) => {
+    //     //     setCategories(resCat.data);
+    //     //   })
+    //     //   .catch((err) => console.log("categories err", err));
+    //   })
+    //   .catch((err) => console.log("books err", err));
   }, [didUpdate]);
   const deleteBook = (id) => {
     console.log(`http://localhost:3004/books/${id}`);
@@ -37,7 +43,7 @@ const ListBooks = (props) => {
       })
       .catch((err) => console.log(err));
   };
-  if (books === null || categories === null) {
+  if (booksState.success !== true || categoriesState.success !== true) {
     return <Loading />;
   }
   return (
@@ -62,8 +68,8 @@ const ListBooks = (props) => {
           </tr>
         </thead>
         <tbody>
-          {books.map((book) => {
-            const category = categories.find(
+          {booksState.books.map((book) => {
+            const category = categoriesState.categories.find(
               (cat) => cat.id === book.categoryId
             );
             return (
@@ -83,6 +89,7 @@ const ListBooks = (props) => {
                         setShowModal(true);
                         //deleteBook(book.id)
                         setSilinecekKitap(book.id);
+                        setSilinecekKitapIsmi(book.name);
                       }}
                     >
                       Delete
@@ -102,10 +109,10 @@ const ListBooks = (props) => {
       </table>
       {showModal === true && (
         <Modal
-          title={"Silme Islemi"}
+          title={silinecekKitapIsmi}
           aciklama={"Silmek istediginize emin misiniz ?"}
-          yapilmasiGerekenIs={() => deleteBook(silinecekKitap)}
-          setShowModal={setShowModal}
+          onConfirm={() => deleteBook(silinecekKitap)}
+          onCancel={() => setShowModal(false)}
         />
       )}
     </div>
