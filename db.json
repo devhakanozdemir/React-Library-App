@@ -27,27 +27,24 @@
       "author": "William Golding",
       "categoryId": "1",
       "isbn": ""
-    },
-    {
-      "id": 1663521532510,
-      "name": "aa",
-      "author": "a",
-      "categoryId": "1",
-      "isbn": "a"
     }
   ],
   "categories": [
     {
-      "id": "1",
+      "id": 1,
       "name": "Novel"
     },
     {
-      "id": "2",
+      "id": 2,
       "name": "Story"
     },
     {
-      "id": "3",
+      "id": 3,
       "name": "Essay"
+    },
+    {
+      "id": 1665257259041,
+      "name": "Poem"
     }
   ]
 }
